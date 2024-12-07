@@ -1,26 +1,69 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { groupTailwindClasses } from './utils/groupTailwindClasses';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+/**
+	* Activates the Tailwind Classifier extension and registers its commands.
+	*/
 export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "tailwind-classifier" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('tailwind-classifier.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from tailwind-classifier!');
+	const disposable = vscode.commands.registerCommand('tailwind-classifier.groupClasses', () => {
+		const editor = vscode.window.activeTextEditor;
+
+		if (editor) {
+			const document = editor.document;
+			const selection = editor.selection;
+
+			if (
+				document.languageId !== 'javascript' &&
+				document.languageId !== 'typescript' &&
+				document.languageId !== 'javascriptreact' &&
+				document.languageId !== 'typescriptreact'
+			) {
+				vscode.window.showErrorMessage('This extension only works with JavaScript, TypeScript, or React files.');
+				return;
+			}
+
+			const text = selection.isEmpty ? document.getText() : document.getText(selection);
+			const formatted = formatCode(text);
+
+			editor.edit((editBuilder) => {
+				if (selection.isEmpty) {
+					const fullRange = new vscode.Range(
+						document.lineAt(0).range.start,
+						document.lineAt(document.lineCount - 1).range.end
+					);
+					editBuilder.replace(fullRange, formatted);
+				} else {
+					editBuilder.replace(selection, formatted);
+				}
+			});
+		}
 	});
 
 	context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+/**
+	* Formats the provided code by reorganizing and grouping Tailwind class names.
+	* @param text The code text to format.
+	* @returns The formatted code.
+	*/
+function formatCode(text: string): string {
+	const classNameRegex = /className\s*=\s*"([^"]+)"/g;
+
+	text = text.replace(classNameRegex, (match, classNames) => {
+		const formattedClasses = groupTailwindClasses(classNames.trim());
+		if (formattedClasses.length === 1) {
+			return `className="${formattedClasses[0]}"`;
+		}
+		return `className={clsx(${formattedClasses.map(cls => `"${cls}"`).join(", ")})}`;
+	});
+
+	return text;
+}
+
+/**
+	* Cleans up resources when the extension is deactivated.
+	*/
+export function deactivate() { }
