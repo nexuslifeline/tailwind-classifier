@@ -1,14 +1,3 @@
-/**
- * Groups Tailwind CSS classes into predefined categories for better organization.
- * 
- * The function splits a string of classes into an array, matches each class
- * against a set of regular expressions, and organizes them into groups such
- * as layout, spacing, sizes, etc.
- *
- * @param {string} classes - A string containing Tailwind CSS class names.
- * @returns {string[]} - An array of grouped and concatenated class strings,
- *                       each representing a category of Tailwind CSS classes.
- */
 export const groupTailwindClasses = (classes: string): string[] => {
   /**
    * Type definition for Tailwind CSS groups, with each key representing a category
@@ -24,27 +13,26 @@ export const groupTailwindClasses = (classes: string): string[] => {
     background: string[];
     animation: string[];
     accessibility: string[];
-    visibility: string[];
     pseudo: string[];
     other: string[];
   };
 
   /**
    * Regular expressions for matching Tailwind CSS classes, categorized by
-   * functionality such as sizes, layout, and spacing.
+   * functionality such as sizes, layout, spacing, etc., with support for 
+   * classes prefixed with `!` (important symbol) and media queries.
    */
   const classPatterns: Record<keyof TailwindGroups, RegExp> = {
-    sizes: /^(w-|h-|min-w-|min-h-|max-w-|max-h-)/,
-    spacing: /^(m-|p-|gap-|space-)/,
-    text: /^(text-|font-|leading-|tracking-)/,
-    layout: /^(flex|grid|items-|justify-|gap-|place-)/,
-    positioning: /^(absolute|relative|fixed|sticky|top-|left-|z-)/,
-    borders: /^(border-|rounded-|outline-|divide-)/,
-    background: /^(bg-|shadow-|opacity-)/,
-    animation: /^(transition-|duration-|animate-)/,
-    accessibility: /^(sr-only|not-sr-only|aria-)/,
-    visibility: /^(block|hidden|invisible)/,
-    pseudo: /^(hover:|focus:|group-|peer-)/,
+    sizes: /^(?:sm:|md:|lg:|xl:|2xl:)?!?(w|h|p|m|size|min-h|min-w|max-w)-.+$/,
+    spacing: /^(?:sm:|md:|lg:|xl:|2xl:)?!?(m|p|mt|mr|mb|ml|space-x|space-y|py|px|my|mx|gap)-.+$/,
+    text: /^(?:sm:|md:|lg:|xl:|2xl:)?!?(text-|font-|leading-|tracking-|uppercase|lowercase|capitalize|decoration-|align-|indent-).+$/,
+    layout: /^(?:sm:|md:|lg:|xl:|2xl:)?!?((flex|table|inline|block|grid|items|justify|order|col|row|place|contents|list-item|flow-root)-.+|flex|grid|hidden|visible|list-item|contents|table|flow-root|inline|block)$/,
+    positioning: /^(?:sm:|md:|lg:|xl:|2xl:)?!?((top|right|left|bottom|z|inset|transform|float|clear|object)-.+|relative|static|fixed|absolute|sticky|transform)$/,
+    borders: /^(?:sm:|md:|lg:|xl:|2xl:)?!?((border|rounded)-.+|border)$/,
+    background: /^(?:sm:|md:|lg:|xl:|2xl:)?!?(bg|shadow|opacity)-.+$/,
+    animation: /^(?:sm:|md:|lg:|xl:|2xl:)?!?(transition|animate|ease|duration|delay)-.+$/,
+    accessibility: /^(!?sm:|!?md:|!?lg:)?(!?sr-only|!?not-sr-only|!?aria-)/,
+    pseudo: /^(!?sm:|!?md:|!?lg:)?(hover:|focus:|focus-visible:|active:|group:|peer:|disabled:|first:|last:|even:|odd:|checked:|visited:|placeholder-shown:|open:|focus-within:)/,
     other: /.*/, // Matches any class not captured by the other classPatterns.
   };
 
