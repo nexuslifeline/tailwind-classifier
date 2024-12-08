@@ -13,7 +13,6 @@ export const groupTailwindClasses = (classes: string): string[] => {
     background: string[];
     animation: string[];
     accessibility: string[];
-    pseudo: string[];
     other: string[];
   };
 
@@ -23,16 +22,15 @@ export const groupTailwindClasses = (classes: string): string[] => {
    * classes prefixed with `!` (important symbol) and media queries.
    */
   const classPatterns: Record<keyof TailwindGroups, RegExp> = {
-    sizes: /^(?:sm:|md:|lg:|xl:|2xl:)?!?(w|h|p|m|size|min-h|min-w|max-w)-.+$/,
-    spacing: /^(?:sm:|md:|lg:|xl:|2xl:)?!?(m|p|mt|mr|mb|ml|space-x|space-y|py|px|my|mx|gap)-.+$/,
-    text: /^(?:sm:|md:|lg:|xl:|2xl:)?!?(text-|font-|leading-|tracking-|uppercase|lowercase|capitalize|decoration-|align-|indent-).+$/,
-    layout: /^(?:sm:|md:|lg:|xl:|2xl:)?!?((flex|table|inline|block|grid|items|justify|order|col|row|place|contents|list-item|flow-root)-.+|flex|grid|hidden|visible|list-item|contents|table|flow-root|inline|block)$/,
-    positioning: /^(?:sm:|md:|lg:|xl:|2xl:)?!?((top|right|left|bottom|z|inset|transform|float|clear|object)-.+|relative|static|fixed|absolute|sticky|transform)$/,
-    borders: /^(?:sm:|md:|lg:|xl:|2xl:)?!?((border|rounded)-.+|border)$/,
-    background: /^(?:sm:|md:|lg:|xl:|2xl:)?!?(bg|shadow|opacity)-.+$/,
-    animation: /^(?:sm:|md:|lg:|xl:|2xl:)?!?(transition|animate|ease|duration|delay)-.+$/,
-    accessibility: /^(!?sm:|!?md:|!?lg:)?(!?sr-only|!?not-sr-only|!?aria-)/,
-    pseudo: /^(!?sm:|!?md:|!?lg:)?(hover:|focus:|focus-visible:|active:|group:|peer:|disabled:|first:|last:|even:|odd:|checked:|visited:|placeholder-shown:|open:|focus-within:)/,
+    sizes: /^(?:sm:|md:|lg:|xl:|2xl:)?(?:hover:|focus:|active:|disabled:|group-hover:|group-focus:|even:|odd:|focus-within:|focus-visible:|first:|last:|not-first:|not-last:|visited:|checked:|placeholder-shown:|read-only:|focus-visible:|focus-within:|peer-)?!?(w|h|size|min-h|min-w|max-w)-.+$/,
+    spacing: /^(?:sm:|md:|lg:|xl:|2xl:)?(?:hover:|focus:|active:|disabled:|group-hover:|group-focus:|even:|odd:|focus-within:|focus-visible:|first:|last:|not-first:|not-last:|visited:|checked:|placeholder-shown:|read-only:|focus-visible:|focus-within:|peer-)?!?(m|p|mt|mr|mb|ml|space-x|space-y|py|px|my|mx|gap)-.+$/,
+    text: /^(?:sm:|md:|lg:|xl:|2xl:)?(?:hover:|focus:|active:|disabled:|group-hover:|group-focus:|even:|odd:|focus-within:|focus-visible:|first:|last:|not-first:|not-last:|visited:|checked:|placeholder-shown:|read-only:|focus-visible:|focus-within:|peer-)?!?(text-|font-|leading-|tracking-|uppercase|lowercase|capitalize|decoration-|align-|indent-).+$/,
+    layout: /^(?:sm:|md:|lg:|xl:|2xl:)?(?:hover:|focus:|active:|disabled:|group-hover:|group-focus:|even:|odd:|focus-within:|focus-visible:|first:|last:|not-first:|not-last:|visited:|checked:|placeholder-shown:|read-only:|focus-visible:|focus-within:|peer-)?!?((flex|table|inline|block|grid|items|justify|order|col|row|place|contents|list-item|flow-root)-.+|flex|grid|hidden|visible|list-item|contents|table|flow-root|inline|block)$/,
+    positioning: /^(?:sm:|md:|lg:|xl:|2xl:)?(?:hover:|focus:|active:|disabled:|group-hover:|group-focus:|even:|odd:|focus-within:|focus-visible:|first:|last:|not-first:|not-last:|visited:|checked:|placeholder-shown:|read-only:|focus-visible:|focus-within:|peer-)?!?((top|right|left|bottom|z|inset|transform|float|clear|object)-.+|relative|static|fixed|absolute|sticky|transform)$/,
+    borders: /^(?:sm:|md:|lg:|xl:|2xl:)?(?:hover:|focus:|active:|disabled:|group-hover:|group-focus:|even:|odd:|focus-within:|focus-visible:|first:|last:|not-first:|not-last:|visited:|checked:|placeholder-shown:|read-only:|focus-visible:|focus-within:|peer-)?!?((border|rounded)-.+|border)$/,
+    background: /^(?:sm:|md:|lg:|xl:|2xl:)?(?:hover:|focus:|active:|disabled:|group-hover:|group-focus:|even:|odd:|focus-within:|focus-visible:|first:|last:|not-first:|not-last:|visited:|checked:|placeholder-shown:|read-only:|focus-visible:|focus-within:|peer-)?!?(bg|shadow|opacity)-.+$/,
+    animation: /^(?:sm:|md:|lg:|xl:|2xl:)?(?:hover:|focus:|active:|disabled:|group-hover:|group-focus:|even:|odd:|focus-within:|focus-visible:|first:|last:|not-first:|not-last:|visited:|checked:|placeholder-shown:|read-only:|focus-visible:|focus-within:|peer-)?!?(transition|animate|ease|duration|delay)-.+$/,
+    accessibility: /^(!?sm:|!?md:|!?lg:)?(?:hover:|focus:|active:|disabled:|group-hover:|group-focus:|even:|odd:|focus-within:|focus-visible:|first:|last:|not-first:|not-last:|visited:|checked:|placeholder-shown:|read-only:|focus-visible:|focus-within:|peer-)?(!?sr-only|!?not-sr-only|!?aria-)/,
     other: /.*/, // Matches any class not captured by the other classPatterns.
   };
 
@@ -50,8 +48,6 @@ export const groupTailwindClasses = (classes: string): string[] => {
     text: [],
     animation: [],
     accessibility: [],
-    visibility: [],
-    pseudo: [],
     other: [],
   };
 
